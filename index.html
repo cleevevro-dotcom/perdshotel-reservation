@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Hotel Reservation</title>
+    <link rel="stylesheet" href="style.css">
+    <style>
+        nav {
+            transition: transform 0.5s ease;
+        }
+        .nav-hidden {
+            transform: translateY(-100%);
+        }
+    </style>
+    <script>
+        function moveNavToTop() {
+            document.querySelector('nav').classList.add('nav-hidden');
+        }
+    </script>
+</head>
+<body>
+    <header>
+        <div class="header-content">
+            <img src="Logo.png" alt="PerdsHotel Logo" class="hotel-logo">
+            <h1>Welcome to PerdsHotel</h1>
+            <p>Experience comfort and luxury with our world-class service.</p>
+            <button onclick="location.href='booking.html'">Book Now</button>
+        </div>
+    </header>
+
+    <nav>
+        <ul>
+            <li><a href="index.html">Home</a></li>
+            <li><a href="rooms.html" onclick="moveNavToTop()">Rooms</a></li>
+            <li><a href="booking.html">Booking</a></li>
+        </ul>
+    </nav>
+
+    <main>
+        <h2>Luxury at Its Best</h2>
+        <p>Our rooms offer a stunning view, modern amenities, and an unforgettable experience.</p>
+    </main>
+
+    <footer>
+        <p>&copy; 2025 Hotel Reservation. All rights reserved.</p>
+    </footer>
+</body>
+</html>

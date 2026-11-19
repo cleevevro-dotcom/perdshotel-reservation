@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Receipt</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <header>
+        <h1>Receipt</h1>
+    </header>
+
+    <nav>
+        <ul>
+            <li><a href="index2.html">Home</a></li>
+        </ul>
+    </nav>
+
+    <section id="receiptSection">
+        <!-- Receipt details will be dynamically inserted here -->
+    </section>
+
+    <footer>
+        <p>&copy; 2025 Hotel Reservation. All rights reserved.</p>
+    </footer>
+
+    <script>
+        // Function to display receipt details
+        window.onload = function() {
+            const receiptData = JSON.parse(localStorage.getItem('receiptData'));
+
+            if (!receiptData) {
+                document.getElementById("receiptSection").innerHTML =
+                    "<p>No receipt data found. Please complete a payment first.</p>";
+                return;
+            }
+
+            // Generate receipt details
+            const receiptDetails = `
+                <h3>Receipt Details</h3>
+                <p><strong>Room Type:</strong> ${receiptData.roomType}</p>
+                <p><strong>Check-in Date:</strong> ${receiptData.checkInDate}</p>
+                <p><strong>Check-out Date:</strong> ${receiptData.checkOutDate}</p>
+                <p><strong>Number of Days:</strong> ${receiptData.numberOfDays}</p>
+                <p><strong>Room Rate (USD):</strong> $${receiptData.roomRate}</p>
+                <p><strong>Total Amount (PHP):</strong> ₱${receiptData.totalAmountPHP}</p>
+                <p><strong>Current Balance (PHP):</strong> ₱${receiptData.currentBalance}</p>
+            `;
+
+            // Display receipt details in the section
+            document.getElementById("receiptSection").innerHTML = receiptDetails;
+
+        };
+    </script>
+</body>
+</html>

@@ -1,0 +1,206 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Payment</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;700&display=swap" rel="stylesheet">
+</head>
+<body>
+    <header>
+        <h1>Payment</h1>
+    </header>
+
+    <nav>
+        <ul>
+            <li><a href="index.html">Home</a></li>
+            <li><a href="rooms.html">Rooms</a></li>
+            <li><a href="booking.html">Booking</a></li>
+        </ul>
+    </nav>
+
+    <section>
+        <p>To complete your booking, please proceed with the payment.</p>
+        <div id="paymentSummary"></div>
+        <button onclick="showPaymentModal()">Pay Now (PHP)</button>
+        <div id="paymentResult"></div>
+    </section>
+
+    <!-- Payment Modal -->
+    <div id="paymentModal" style="display:none;">
+        <div class="modal-content">
+            <span class="close">&times;</span>
+            <h2>Enter Card Details</h2>
+            <form id="cardForm">
+                <label for="cardNumber">Card Number:</label>
+                <input type="text" id="cardNumber" name="cardNumber" required>
+
+                <label for="expirationDate">Expiration Date:</label>
+                <input type="month" id="expirationDate" name="expirationDate" required>
+
+                <label for="cvv">CVV:</label>
+                <input type="number" id="cvv" name="cvv" required>
+
+                <button type="button" onclick="confirmPayment()">Confirm Payment</button>
+            </form>
+        </div>
+    </div>
+
+    <footer>
+        <p>&copy; 2025 Hotel Reservation. All rights reserved.</p>
+    </footer>
+
+    <script>
+        // Initialize the balance
+        let balance = 10000000;
+
+        // Function to calculate the room rate based on room type
+        function calculateRoomRate(roomType) {
+            switch (roomType) {
+                case 'standard':
+                    return 1500; // Example rate in USD
+                case 'deluxe':
+                    return 2500; // Example rate in USD
+                case 'presidential':
+                    return 5000; // Example rate in USD
+                default:
+                    return 1000; // Default rate if room type is unknown
+                }
+            }
+
+            // Function to calculate the number of days between two dates
+        
+        function calculateNumberOfDays(checkInDate, checkOutDate) {
+            const checkIn = new Date(checkInDate);
+            const checkOut = new Date(checkOutDate);
+            const timeDiff = checkOut.getTime() - checkIn.getTime();
+            const numberOfDays = Math.ceil(timeDiff / (1000 * 3600 * 24));
+            return numberOfDays;
+        }
+
+        // Function to compute the payment amount
+        function computePaymentAmount(roomRate, numberOfDays, exchangeRate) {
+            const amountUSD = roomRate * numberOfDays;
+            const amountPHP = amountUSD * exchangeRate; // Convert USD to PHP
+            return amountPHP;
+        }
+
+        // Function to process the payment
+        function processPayment(amountPHP) {
+            if (balance >= amountPHP) {
+                balance -= amountPHP;
+
+                // Display the payment result
+                const paymentResult = document.getElementById("paymentResult");
+                paymentResult.innerHTML = `Payment of ₱${amountPHP.toFixed(2)} successful!`; // Display the result
+
+                return true;
+            } else {
+                alert("Insufficient balance.");
+                return false;
+            }
+        }
+
+        // Function to display payment summary
+        function displayPaymentSummary() {
+            const bookingData = JSON.parse(localStorage.getItem('bookingData'));
+            if (!bookingData) {
+                document.getElementById("paymentSummary").innerText = "No booking data found.";
+                return;
+            }
+
+            // Example exchange rate (USD to PHP)
+            const exchangeRate = 55; // 1 USD = 55 PHP
+            const roomRate = calculateRoomRate(bookingData.roomType);
+            const numberOfDays = calculateNumberOfDays(bookingData.checkInDate, bookingData.checkOutDate);
+            const amountPHP = computePaymentAmount(roomRate, numberOfDays, exchangeRate);
+
+            // Create a summary of the payment details
+            let paymentSummary = `
+                <h3>Payment Summary</h3>
+                <p>Room Type: ${bookingData.roomType}</p>
+                <p>Check-in Date: ${bookingData.checkInDate}</p>
+                <p>Check-out Date: ${bookingData.checkOutDate}</p>
+                <p>Number of Days: ${numberOfDays}</p>
+                <p>Room Rate (USD): $${roomRate}</p>
+                <p>Exchange Rate (USD to PHP): 1 USD = ${exchangeRate} PHP</p>
+                <p>Total Amount (PHP): ₱${amountPHP.toFixed(2)}</p>
+            `;
+
+            // Display the payment summary in the paymentSummary div
+            document.getElementById("paymentSummary").innerHTML = paymentSummary;
+
+            return amountPHP;
+        }
+
+        // Function to show the payment modal
+        function showPaymentModal() {
+            const modal = document.getElementById("paymentModal");
+            modal.style.display = "block";
+
+            // Get the <span> element that closes the modal
+            const span = document.getElementsByClassName("close")[0];
+
+            // When the user clicks on <span> (x), close the modal
+            span.onclick = function() {
+                modal.style.display = "none";
+            }
+
+            // When the user clicks anywhere outside of the modal, close it
+            window.onclick = function(event) {
+                if (event.target == modal) {
+                    modal.style.display = "none";
+                }
+            }
+        }
+
+        // Function to confirm the payment
+        function confirmPayment() {
+    const modal = document.getElementById("paymentModal");
+    modal.style.display = "none";
+
+    const bookingData = JSON.parse(localStorage.getItem('bookingData'));
+    if (!bookingData) {
+        alert("No booking data found. Please go back and fill the booking form.");
+        return;
+    }
+
+    // Example exchange rate (USD to PHP)
+    const exchangeRate = 55; // 1 USD = 55 PHP
+    const roomRate = calculateRoomRate(bookingData.roomType);
+    const numberOfDays = calculateNumberOfDays(bookingData.checkInDate, bookingData.checkOutDate);
+    const amountPHP = computePaymentAmount(roomRate, numberOfDays, exchangeRate);
+
+    const paymentSuccessful = processPayment(amountPHP);
+
+    if (paymentSuccessful) {
+        // Prepare **final booking details** to be saved in localStorage
+        const finalBookingData = {
+            fullName: bookingData.fullName,
+            email: bookingData.email,
+            roomType: bookingData.roomType,
+            checkInDate: bookingData.checkInDate,
+            checkOutDate: bookingData.checkOutDate,
+            numberOfDays: numberOfDays,
+            totalAmountPHP: amountPHP.toFixed(2),
+            currentBalance: balance.toFixed(2)
+        };
+
+        // Save final booking details in localStorage
+        localStorage.setItem('receiptData', JSON.stringify(finalBookingData));
+
+        // Redirect to receipt page
+        window.location.href = 'receipt.html';
+    }
+}
+
+        // Call the function to display the payment summary when the page loads
+        window.onload = function() {
+            displayPaymentSummary();
+        };
+    </script>
+</body>
+</html>

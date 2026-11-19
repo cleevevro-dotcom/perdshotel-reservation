@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Booking</title>
+    <link rel="stylesheet" href="style.css">
+    <style>
+        .booking-container {
+            display: flex;
+            justify-content: space-between;
+            gap: 30px;
+            padding: 40px;
+            max-width: 1200px;
+            margin: auto;
+        }
+        .booking-form {
+            background: #252525;
+            padding: 35px;
+            border-radius: 15px;
+            box-shadow: 0 5px 15px rgba(255, 255, 255, 0.15);
+            width: 48%;
+        }
+        .booking-form h2 {
+            text-align: center;
+            margin-bottom: 25px;
+            font-size: 26px;
+            color: #ffc107;
+        }
+        .booking-form label {
+            display: block;
+            margin: 12px 0 6px;
+            font-size: 17px;
+            color: #f8f9fa;
+            font-weight: bold;
+        }
+        .booking-form input, .booking-form select, .booking-form button {
+            width: 100%;
+            padding: 14px;
+            margin: 10px 0;
+            border-radius: 10px;
+            border: none;
+            font-size: 17px;
+        }
+        .booking-form input, .booking-form select {
+            background: #2c2c2c;
+            color: white;
+            border: 1px solid #666;
+        }
+        .booking-form input:focus, .booking-form select:focus {
+            outline: none;
+            border-color: #ffc107;
+        }
+        .booking-form button {
+            background: #ff7f50;
+            color: white;
+            cursor: pointer;
+            transition: background 0.3s ease-in-out, transform 0.2s;
+            font-size: 18px;
+            font-weight: bold;
+        }
+        .booking-form button:hover {
+            background: #ff5722;
+            transform: scale(1.05);
+        }
+        .booking-tracking {
+            width: 48%;
+            background: #252525;
+            padding: 20px;
+            border-radius: 15px;
+            box-shadow: 0 5px 15px rgba(255, 255, 255, 0.15);
+        }
+        .booking-tracking h2 {
+            text-align: center;
+            color: #ffc107;
+        }
+        .booking-tracking p {
+            color: #f8f9fa;
+            text-align: center;
+        }
+    </style>
+    <script>
+        window.addEventListener('scroll', function() {
+            let header = document.querySelector('header');
+            if (window.scrollY > 50) {
+                header.classList.add('shrink');
+            } else {
+                header.classList.remove('shrink');
+            }
+        });
+
+        function redirectToPayment(event) {
+            event.preventDefault();
+            window.location.href = 'payment.html';
+        }
+    </script>
+</head>
+<body>
+    <header>
+        <h1>Book Your Stay</h1>
+    </header>
+
+    <nav>
+        <ul>
+            <li><a href="index.html">Home</a></li>
+            <li><a href="rooms.html">Rooms</a></li>
+            <li><a href="booking.html">Booking</a></li>
+        </ul>
+    </nav>
+
+    <main>
+        <div class="booking-container">
+            <section class="booking-form">
+                <h2>Booking Form</h2>
+                <form id="bookingForm" onsubmit="redirectToPayment(event)">
+                    <label for="fullName">Full Name:</label>
+                    <input type="text" id="fullName" name="fullName" required>
+
+                    <label for="email">Email:</label>
+                    <input type="email" id="email" name="email" required>
+
+                    <label for="checkInDate">Check-in Date:</label>
+                    <input type="date" id="checkInDate" name="checkInDate" required>
+
+                    <label for="checkOutDate">Check-out Date:</label>
+                    <input type="date" id="checkOutDate" name="checkOutDate" required>
+
+                    <label for="roomType">Room Type:</label>
+                    <select id="roomType" name="roomType">
+                        <option value="standard">Standard</option>
+                        <option value="deluxe">Deluxe</option>
+                        <option value="suite">Suite</option>
+                        <option value="presidential">Presidential Suite</option>
+                    </select>
+
+                    <button type="submit">Proceed to Payment</button>
+                </form>
+            </section>
+
+            <section class="booking-tracking">
+                <h2>Booking Details</h2>
+                <div id="bookingDetails">
+                    <p>No booking details available.</p>
+                </div>
+            </section>
+        </div>
+    </main>
+
+    <footer>
+        <p style="text-align: center;">&copy; 2025 Hotel Reservation. All rights reserved.</p>
+    </footer>
+</body>
+</html>
