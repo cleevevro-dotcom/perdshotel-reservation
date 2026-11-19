@@ -2,6 +2,8 @@
 
 A static hotel website prototype with room browsing, booking, payment, and receipt pages. The repository includes the original hotel and room imagery used by the interface.
 
+![Original hotel background artwork](HotelBackground.png)
+
 ## Stack
 
 HTML, CSS, and JavaScript.
